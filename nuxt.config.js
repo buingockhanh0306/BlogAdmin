@@ -17,17 +17,14 @@ export default {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
-
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/axios.js"],
+  plugins: ["~/plugins/axios.js", "~/plugins/ant-design-vue.js"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [],
+  buildModules: ["@nuxt/http", "@nuxtjs/auth"],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@nuxtjs/axios"],
@@ -37,6 +34,26 @@ export default {
     baseURL: "http://localhost:8080/api", // Base URL for API requests
     credentials: false, // Include credentials with requests if needed
     // Additional configurations can be added here
+  },
+
+  auth: {
+    strategies: {
+      // Cấu hình phương thức xác thực
+      local: {
+        endpoints: {
+          login: { url: "/login", method: "post", propertyName: "token" },
+          logout: { url: "/logout", method: "post" },
+          user: { url: "/me", method: "get", propertyName: "user" },
+        },
+        token: {
+          property: "token",
+          global: true,
+        },
+        user: {
+          property: false,
+        },
+      },
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

@@ -1,8 +1,10 @@
-export default function ({ $axios, store, redirect }) {
-  const token = localStorage.getItem("token");
+// middleware/auth.js
+export default function ({ $auth, redirect }) {
+  console.log($auth.loggedIn);
 
-  if (token) {
-    $axios.setHeader("Authorization", `Bearer ${token}`);
+  if ($auth.loggedIn) {
+    console.log("vao day 123");
+    redirect("/admin");
   } else {
     redirect("/login");
   }

@@ -2,7 +2,7 @@
   <div>
     <h1>Admin page</h1>
     <button @click="handleLogout">Logout</button>
-    {{ result?.data }}
+    {{ $auth.user }}
   </div>
 </template>
 
@@ -14,15 +14,11 @@ export default {
       result: null,
     };
   },
-  mounted() {
-    this.getUser();
-  },
+  mounted() {},
   methods: {
-    async getUser() {
-      this.result = await this.$axios.get("/users");
-    },
-    handleLogout() {
-      localStorage.removeItem("token");
+    async handleLogout() {
+      await this.$auth.logout();
+      this.$auth.reset();
       this.$router.push("/login");
     },
   },
