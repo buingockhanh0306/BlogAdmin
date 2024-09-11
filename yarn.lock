@@ -1904,6 +1904,11 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.25.tgz#f077fdc0b5d0078d30893396ff4827a13f99e817"
   integrity sha512-j7P6Rgr3mmtdkeDGTe0E/aYyWEWVtc5yFXtHCRHs28/jptDEWfaVOc5T7cblqy1XKPPfCxJc/8DwQ5YgLOZOVQ==
 
+"@pqina/vue-pintura@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@pqina/vue-pintura/-/vue-pintura-9.0.1.tgz#e13d67c4631e38b851dac3b2f5650558a51114df"
+  integrity sha512-D8qvMp0DWfjJV07y/FjfdPNOgg/ouFZhI1v7zAUAp4osNMcNfycz79WzOg8KSN50eAqiE1ybIOWZ38SiZClBIQ==
+
 "@rc-component/async-validator@^5.0.3":
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/@rc-component/async-validator/-/async-validator-5.0.4.tgz#5291ad92f00a14b6766fc81735c234277f83e948"

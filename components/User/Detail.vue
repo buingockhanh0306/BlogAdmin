@@ -14,7 +14,9 @@
             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
           /> -->
         <div class="under-avatar">
-          <a-button type="link"> Thay đổi ảnh </a-button>
+          <a-button type="link" @click="isShowModalChangeAvatar = true">
+            Thay đổi ảnh
+          </a-button>
           <a-button type="link" @click="isShowModalChangePassword = true">
             Đổi mật khẩu
           </a-button>
@@ -84,6 +86,10 @@
       @handleChangePassword="handleChangePassword"
       @handleCancel="closeModalChangePassword"
     />
+    <ModalChangeAvatar
+      :visible="isShowModalChangeAvatar"
+      @handleCancel="isShowModalChangeAvatar = false"
+    />
   </div>
 </template>
 
@@ -97,6 +103,7 @@ export default {
   data() {
     return {
       isShowModalChangePassword: false,
+      isShowModalChangeAvatar: false,
       isDisableForm: true,
       isError: false,
       isTyping: false,
@@ -127,6 +134,9 @@ export default {
     },
     isFormError() {
       return this.isError;
+    },
+    triggerFileUpload() {
+      this.$refs.fileInput.click();
     },
   },
   mounted() {
@@ -229,8 +239,6 @@ export default {
   align-items: center;
   .under-avatar {
     margin: 20px;
-    p {
-    }
   }
 }
 .group-btn {
