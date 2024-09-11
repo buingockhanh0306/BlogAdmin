@@ -1,0 +1,22 @@
+.title{
+    font-size: 24px;
+    font-weight: 700;
+    color: "#3C3D37";
+}
+
+.green-button {
+    background-color: #4CAF50 !important; 
+    color: white !important; 
+    cursor: pointer !important; 
+    transition: background-color 0.3s !important;
+    border-color: transparent !important;
+  }
+
+.disabled-btn{
+    color: rgba(0, 0, 0, 0.25) !important;
+    background-color: #f5f5f5 !important;
+    border-color: #d9d9d9 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  

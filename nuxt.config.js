@@ -21,11 +21,15 @@ export default {
   plugins: ["~/plugins/axios.js", "~/plugins/ant-design-vue.js"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
+  components: [
+    // Equivalent to { path: '~/components' }
+    "~/components",
+  ],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: ["@nuxt/http", "@nuxtjs/auth"],
 
+  css: ["~/assets/scss/main.scss"],
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@nuxtjs/axios"],
 

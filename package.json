@@ -21,7 +21,8 @@
     "sass-loader": "^10",
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
-    "vue-template-compiler": "^2.7.10"
+    "vue-template-compiler": "^2.7.10",
+    "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {}
 }

@@ -6,21 +6,21 @@
       :rules="rules"
       class="login-form"
     >
-      <a-form-model-item ref="email" label="Email" prop="email">
+      <a-form-model-item ref="username" label="Tên người dùng" prop="username">
         <a-input
-          v-model="form.email"
-          placeholder="Email"
-          @input="handleInput('email')"
+          v-model="form.username"
+          placeholder="Tên người dùng"
+          @input="handleInput('username')"
           @blur="
             () => {
-              $refs.email.onFieldBlur();
+              $refs.username.onFieldBlur();
             }
           "
         />
       </a-form-model-item>
 
       <a-form-model-item ref="password" label="Mật khẩu" prop="password">
-        <a-input
+        <a-input-password
           v-model="form.password"
           type="password"
           placeholder="Mật khẩu"
@@ -50,28 +50,18 @@
 </template>
 
 <script>
+import general from "~/mixins/general";
 export default {
+  mixins: [general],
+  name: "ModalAddUser",
   data() {
     return {
       form: {
-        email: "",
+        username: "",
         password: "",
       },
       rules: {
-        email: [
-          {
-            required: true,
-            message: "Please input Activity name",
-            trigger: "blur",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            message: "Please select Activity zone",
-            trigger: "blur",
-          },
-        ],
+        username: this.usernameRules(),
       },
     };
   },
@@ -82,10 +72,17 @@ export default {
     onSubmit() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          await this.$auth.loginWith("local", {
-            data: this.form,
-          });
-          this.$router.push("/admin");
+          try {
+            await this.$auth.loginWith("local", {
+              data: this.form,
+            });
+            this.$router.push("/");
+          } catch (error) {
+            this.$notification["error"]({
+              message: "Thông báo",
+              description: error.response.data.message,
+            });
+          }
         } else {
           return false;
         }

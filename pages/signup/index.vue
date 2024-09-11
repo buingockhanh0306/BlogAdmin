@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <h1>Signup</h1>
-    <input v-model="data.email" type="text" placeholder="email" />
+    <input v-model="data.username" type="text" placeholder="username" />
     <input v-model="data.password" type="text" placeholder="password" />
     <input v-model="data.displayName" type="text" placeholder="Display Name" />
     <div>
@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       data: {
-        email: "",
+        username: "",
         password: "",
         displayName: "",
         role: 0,
