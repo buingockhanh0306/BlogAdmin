@@ -1,3 +1,5 @@
+
+@import 'variables';
 .title{
     font-size: 24px;
     font-weight: 700;
@@ -5,7 +7,7 @@
 }
 
 .green-button {
-    background-color: #4CAF50 !important; 
+    background-color: $green-color !important; 
     color: white !important; 
     cursor: pointer !important; 
     transition: background-color 0.3s !important;
@@ -18,5 +20,19 @@
     border-color: #d9d9d9 !important;
     text-shadow: none !important;
     box-shadow: none !important;
+    pointer-events: none;
   }
-  
+  .text-disable {
+    color: $gray-color !important;
+    cursor: default;
+    pointer-events: none;
+  }
+  .text-red {
+    color: $red-color !important;
+  }
+  .text-blue {
+    color: $blue-color;
+  }
+  .border-error-file {
+    border-color: $red-color !important;
+  }
