@@ -4,15 +4,18 @@
     <div class="content-edit">
       <div class="avatar-user">
         <a-avatar
+          v-if="$auth.$state.user.avatar"
+          :size="128"
+          :src="`http://localhost:8080/uploads/${$auth.$state.user.avatar}`"
+        />
+        <a-avatar
+          v-else
           :size="128"
           style="color: #f56a00; background-color: #fde3cf; font-size: 52px"
         >
           {{ textAvatar }}
         </a-avatar>
-        <!-- <a-avatar
-            :size="128"
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          /> -->
+
         <div class="under-avatar">
           <a-button type="link" @click="isShowModalChangeAvatar = true">
             Thay đổi ảnh

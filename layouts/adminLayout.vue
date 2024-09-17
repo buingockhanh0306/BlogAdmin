@@ -25,7 +25,11 @@
           @click="() => (collapsedAvatar = !collapsedAvatar)"
         >
           <a-dropdown :trigger="['click']">
-            <a-avatar class="avatar">{{ textAvatar }}</a-avatar>
+            <a-avatar
+              v-if="$auth.$state.user.avatar"
+              :src="`http://localhost:8080/uploads/${$auth.$state.user.avatar}`"
+            />
+            <a-avatar v-else class="avatar">{{ textAvatar }}</a-avatar>
             <a-menu slot="overlay">
               <a-menu-item class="ellipsis" key="1">
                 {{ displayName }}

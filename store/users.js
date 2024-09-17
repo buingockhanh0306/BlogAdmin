@@ -46,4 +46,16 @@ export const actions = {
     });
     return result.data;
   },
+  async uploadAvatar({}, payload) {
+    const result = await this.$axios.put(
+      `/upload/avatar/${payload.id}`,
+      payload.formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return result.data;
+  },
 };

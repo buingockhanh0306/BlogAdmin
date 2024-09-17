@@ -89,6 +89,7 @@
 
 <script>
 import VueCropper from "vue-cropperjs";
+import { mapActions } from "vuex";
 import "cropperjs/dist/cropper.css";
 export default {
   name: "ModalChangeAvatar",
@@ -105,6 +106,7 @@ export default {
       isDragging: false,
       messageError: "",
       fileName: "",
+      payloadData: null,
     };
   },
   computed: {
@@ -122,7 +124,7 @@ export default {
     },
   },
   methods: {
-    handleOk() {},
+    ...mapActions("users", ["uploadAvatar"]),
     cancel() {
       this.$emit("handleCancel");
     },
@@ -181,9 +183,24 @@ export default {
 
         reader.readAsDataURL(file);
         this.$refs.fileInput.value = null;
-      } else {
-        alert("Sorry, FileReader API not supported");
       }
+      const formData = new FormData();
+      formData.append("image", file);
+      this.payloadData = { id: this.$route.params.id, formData };
+    },
+    async handleOk() {
+      try {
+        const res = await this.uploadAvatar(this.payloadData);
+
+        if (res.status === "success") {
+          await this.$auth.fetchUser();
+          this.cancel();
+          this.$notification["success"]({
+            message: "Thông báo",
+            description: "Cập nhật ảnh đại diện thành công!",
+          });
+        }
+      } catch (error) {}
     },
   },
 };
