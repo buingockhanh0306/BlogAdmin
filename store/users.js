@@ -58,4 +58,8 @@ export const actions = {
     );
     return result.data;
   },
+  async deleteAvatar({}, id) {
+    const result = await this.$axios.put(`/users/delete-avatar/${id}`);
+    return result.data;
+  },
 };

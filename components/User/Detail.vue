@@ -4,9 +4,9 @@
     <div class="content-edit">
       <div class="avatar-user">
         <a-avatar
-          v-if="$auth.$state.user.avatar"
+          v-if="$auth.$state.user?.avatar"
           :size="128"
-          :src="`http://localhost:8080/uploads/${$auth.$state.user.avatar}`"
+          :src="`${urlImage}/${$auth.$state.user?.avatar}`"
         />
         <a-avatar
           v-else
@@ -97,14 +97,15 @@
 </template>
 
 <script>
-import general from "~/mixins/general";
+import ruleValidator from "~/mixins/ruleValidator";
 import { mapActions } from "vuex";
 import { mapFields } from "vuex-map-fields";
 export default {
   name: "UserDetail",
-  mixins: [general],
+  mixins: [ruleValidator],
   data() {
     return {
+      urlImage: process.env.urlImage,
       isShowModalChangePassword: false,
       isShowModalChangeAvatar: false,
       isDisableForm: true,
@@ -123,14 +124,14 @@ export default {
   computed: {
     ...mapFields("users", ["errorMessage"]),
     textAvatar() {
-      const lastName = this.$auth.$state.user.displayName.split(" ");
-      return lastName.pop()[0];
+      const lastName = this.$auth.$state.user?.displayName?.split(" ");
+      return lastName?.pop()[0];
     },
     isDisableButton() {
       return (
         (!this.isDisableForm &&
           this.form.username === this.$auth.$state.user.username &&
-          this.form.displayName === this.$auth.$state.user.displayName) ||
+          this.form.displayName === this.$auth.$state.user?.displayName) ||
         this.isFormError ||
         this.isTyping
       );
@@ -148,8 +149,8 @@ export default {
   methods: {
     ...mapActions("users", ["changePassword", "updateUser"]),
     validateForm() {
-      return new Promise((resolve, reject) => {
-        this.$refs.ruleForm.validate((valid, errors) => {
+      return new Promise(() => {
+        this.$refs.ruleForm.validate((valid) => {
           this.isError = !valid;
         });
       });
@@ -158,7 +159,7 @@ export default {
       this.form = {
         ...this.form,
         username: this.$auth.$state.user.username,
-        displayName: this.$auth.$state.user.displayName,
+        displayName: this.$auth.$state.user?.displayName,
       };
     },
     handleCancel() {
@@ -190,9 +191,8 @@ export default {
         } catch (error) {
           this.$notification["error"]({
             message: "Thông báo",
-            description: "Thay đổi thông tin thất bại!",
+            description: error.response.data.message,
           });
-          this.isDisableForm = true;
           return;
         }
       }

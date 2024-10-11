@@ -32,6 +32,9 @@
           "
         />
       </a-form-model-item>
+      <a-checkbox class="checkbox" @change="onChangeStaySignIn"
+        >Duy trì đăng nhập
+      </a-checkbox>
 
       <a-form-model-item>
         <div class="login-button">
@@ -50,15 +53,16 @@
 </template>
 
 <script>
-import general from "~/mixins/general";
+import ruleValidator from "~/mixins/ruleValidator";
 export default {
-  mixins: [general],
+  mixins: [ruleValidator],
   name: "ModalAddUser",
   data() {
     return {
       form: {
         username: "",
         password: "",
+        staySignIn: false,
       },
       rules: {
         username: this.usernameRules(),
@@ -66,7 +70,10 @@ export default {
     };
   },
   methods: {
-    handleInput(field) {
+    onChangeStaySignIn(e) {
+      this.staySignIn = +e.target.checked;
+    },
+    handleInput() {
       this.$refs.ruleForm.clearValidate();
     },
     onSubmit() {
@@ -131,6 +138,9 @@ $label-color: #000;
     display: flex;
     justify-content: center;
     margin: 10px;
+  }
+  .checkbox {
+    margin-top: 10px;
   }
 }
 </style>

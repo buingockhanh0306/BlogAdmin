@@ -102,6 +102,7 @@ export default {
   },
   data() {
     return {
+      urlImage: process.env.urlImage,
       imageData: "",
       isDragging: false,
       messageError: "",
@@ -119,18 +120,33 @@ export default {
       },
     },
     textAvatar() {
-      const lastName = this.$auth.$state.user.displayName.split(" ");
-      return lastName.pop()[0];
+      const lastName = this.$auth.$state.user?.displayName?.split(" ");
+      return lastName?.pop()[0];
     },
   },
+  mounted() {
+    this.imageData = this.$auth.$state.user?.avatar
+      ? `${this.urlImage}/${this.$auth.$state.user?.avatar}`
+      : "";
+  },
   methods: {
-    ...mapActions("users", ["uploadAvatar"]),
+    ...mapActions("users", ["uploadAvatar", "deleteAvatar"]),
     cancel() {
+      this.messageError = "";
+      this.$refs.fileInput.value = null;
       this.$emit("handleCancel");
     },
-    handleDeleteImage() {
-      this.imageData = "";
-      this.fileName = "";
+    async handleDeleteImage() {
+      const res = await this.deleteAvatar(this.$route.params.id);
+      if (res.status === "success") {
+        this.imageData = "";
+        this.fileName = "";
+        await this.$auth.fetchUser();
+        this.$notification["success"]({
+          message: "Thông báo",
+          description: "Đã xoá ảnh đại diện.",
+        });
+      }
     },
     disableCropResize(event) {
       if (event.action === "crop") {
@@ -167,40 +183,39 @@ export default {
       this.isDragging = false;
       const file = isDrag ? e.dataTransfer.files[0] : e.target.files[0];
       this.fileName = file.name;
-
       if (file.type.indexOf("image/") === -1) {
         this.messageError = "Sai định dạng file tải lên.";
         return;
       }
-
       if (typeof FileReader === "function") {
         const reader = new FileReader();
-
         reader.onload = (event) => {
           this.imageData = event.target.result;
           this.messageError = "";
         };
-
         reader.readAsDataURL(file);
         this.$refs.fileInput.value = null;
       }
-      const formData = new FormData();
-      formData.append("image", file);
-      this.payloadData = { id: this.$route.params.id, formData };
     },
     async handleOk() {
-      try {
-        const res = await this.uploadAvatar(this.payloadData);
-
-        if (res.status === "success") {
-          await this.$auth.fetchUser();
-          this.cancel();
-          this.$notification["success"]({
-            message: "Thông báo",
-            description: "Cập nhật ảnh đại diện thành công!",
+      if (this.$refs.cropper) {
+        await this.$refs.cropper.getCroppedCanvas().toBlob(async (blob) => {
+          const formData = new FormData();
+          formData.append("image", blob, this.fileName);
+          const res = await this.uploadAvatar({
+            id: this.$route.params.id,
+            formData,
           });
-        }
-      } catch (error) {}
+          if (res.status === "success") {
+            await this.$auth.fetchUser();
+            this.$notification["success"]({
+              message: "Thông báo",
+              description: "Cập nhật ảnh đại diện thành công!",
+            });
+          }
+        }, "image/jpeg");
+      }
+      this.cancel();
     },
   },
 };

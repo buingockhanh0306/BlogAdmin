@@ -68,10 +68,10 @@
 </template>
 
 <script>
-import general from "~/mixins/general";
+import ruleValidator from "~/mixins/ruleValidator";
 export default {
   name: "ModalAddUser",
-  mixins: [general],
+  mixins: [ruleValidator],
   props: {
     visible: {
       type: Boolean,

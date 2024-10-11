@@ -68,11 +68,11 @@
 </template>
 
 <script>
-import general from "~/mixins/general";
+import ruleValidator from "~/mixins/ruleValidator";
 import { mapFields } from "vuex-map-fields";
 export default {
   name: "ModalChangePassword",
-  mixins: [general],
+  mixins: [ruleValidator],
   props: {
     visible: {
       type: Boolean,

@@ -35,7 +35,7 @@ export default {
 
   axios: {
     // Example: setting baseURL
-    baseURL: "http://localhost:8080/api", // Base URL for API requests
+    baseURL: process.env.BASE_URL, // Base URL for API requests
     credentials: false, // Include credentials with requests if needed
     // Additional configurations can be added here
   },
@@ -59,7 +59,9 @@ export default {
       },
     },
   },
-
-  // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  env: {
+    tinyMCEKey: process.env.TINYMCE_KEY,
+    baseURL: process.env.BASE_URL,
+    urlImage: process.env.URL_IMAGE
+  },
 };

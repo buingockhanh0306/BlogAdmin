@@ -4,6 +4,7 @@
 
 <script>
 export default {
+  layout: 'authLayout',
   async asyncData({ $auth, redirect }) {
     if ($auth.loggedIn) {
       return redirect("/");

@@ -30,7 +30,6 @@ export default {
     async handleSignup() {
       try {
         const res = await this.$axios.post("/users/create-user", this.data);
-        console.log(res);
         if (res.data.status === "success") {
         }
       } catch (error) {
@@ -49,7 +48,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 4;
+  gap: 4px;
 }
 input[type="text"] {
   width: 400px;

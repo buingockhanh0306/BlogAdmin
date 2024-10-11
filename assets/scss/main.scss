@@ -1,15 +1,14 @@
-
 @import 'variables';
 .title{
     font-size: 24px;
     font-weight: 700;
-    color: "#3C3D37";
+    color: $gray-color;
 }
 
 .green-button {
-    background-color: $green-color !important; 
-    color: white !important; 
-    cursor: pointer !important; 
+    background-color: $green-color !important;
+    color: white !important;
+    cursor: pointer !important;
     transition: background-color 0.3s !important;
     border-color: transparent !important;
   }

@@ -91,6 +91,13 @@ export default {
       }
     },
     async handleClickActive(record) {
+      if (record.id === this.$auth.user.id) {
+        this.$notification["error"]({
+          message: "Thông báo",
+          description: "Không thể huỷ kích hoạt khi đang đăng nhập.",
+        });
+        return;
+      }
       if (record.is_active) {
         this.$confirm({
           title: `Bạn có chắc chắn muốn huỷ kích hoạt \"${record.displayName}\" không?`,
