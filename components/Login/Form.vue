@@ -76,13 +76,19 @@ export default {
     handleInput() {
       this.$refs.ruleForm.clearValidate();
     },
-    onSubmit() {
+    async onSubmit() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           try {
-            await this.$auth.loginWith("local", {
-              data: this.form,
+            const response = await this.$auth.loginWith("local", {
+              data: {
+                email: this.form.username,
+                password: this.form.password,
+                returnSecureToken: true,
+              },
             });
+            await this.$auth.setUserToken(response.data.idToken);
+            await this.$auth.setUser(response.data);
             this.$router.push("/");
           } catch (error) {
             this.$notification["error"]({
@@ -105,7 +111,7 @@ $background-image: url("https://images.pexels.com/photos/1103970/pexels-photo-11
 $white: #ffffff;
 $shadow-color: rgba(0, 0, 0, 0.1);
 $border-radius: 8px;
-$label-color: #000;
+$label-color: #666;
 
 .ant-form-item {
   margin-bottom: 0;

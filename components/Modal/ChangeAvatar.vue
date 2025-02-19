@@ -125,9 +125,9 @@ export default {
     },
   },
   mounted() {
-    this.imageData = this.$auth.$state.user?.avatar
-      ? `${this.urlImage}/${this.$auth.$state.user?.avatar}`
-      : "";
+    // this.imageData = this.$auth.$state.user?.avatar
+    //   ? `${this.urlImage}/${this.$auth.$state.user?.avatar}`
+    //   : "";
   },
   methods: {
     ...mapActions("users", ["uploadAvatar", "deleteAvatar"]),

@@ -17,6 +17,7 @@
     "ant-design-vue": "1.7.8",
     "antd": "^5.19.0",
     "core-js": "^3.25.3",
+    "firebase": "^11.3.1",
     "nuxt": "^2.15.8",
     "sass": "^1.78.0",
     "sass-loader": "^10",

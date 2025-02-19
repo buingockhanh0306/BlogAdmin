@@ -144,7 +144,7 @@ export default {
     },
   },
   mounted() {
-    this.initData();
+    // this.initData();
   },
   methods: {
     ...mapActions("users", ["changePassword", "updateUser"]),

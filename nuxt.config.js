@@ -18,7 +18,11 @@ export default {
   },
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/axios.js", "~/plugins/ant-design-vue.js"],
+  plugins: [
+    { src: "~/plugins/firebase.js", mode: "client" },
+    "~/plugins/axios.js",
+    "~/plugins/ant-design-vue.js",
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [
@@ -39,29 +43,48 @@ export default {
     credentials: false, // Include credentials with requests if needed
     // Additional configurations can be added here
   },
-
   auth: {
     strategies: {
-      // Cấu hình phương thức xác thực
       local: {
-        endpoints: {
-          login: { url: "/login", method: "post", propertyName: "token" },
-          logout: { url: "/logout", method: "post" },
-          user: { url: "/me", method: "get", propertyName: "user" },
-        },
         token: {
-          property: "token",
+          property: "idToken",
           global: true,
+          required: true,
+          type: "Bearer",
+          storage: "localStorage",
         },
-        user: {
-          property: false,
+        endpoints: {
+          login: {
+            url:
+              "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
+              process.env.FIREBASE_API_KEY,
+            method: "post",
+            propertyName: "idToken",
+          },
+          logout: false,
+          user: false,
         },
       },
     },
+    localStorage: {
+      prefix: "auth.",
+    },
+    redirect: {
+      login: "/login",
+      logout: "/login",
+      home: "/",
+    },
   },
+
   env: {
     tinyMCEKey: process.env.TINYMCE_KEY,
     baseURL: process.env.BASE_URL,
-    urlImage: process.env.URL_IMAGE
+    urlImage: process.env.URL_IMAGE,
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
   },
 };

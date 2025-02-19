@@ -67,7 +67,7 @@ export default {
     ...mapFields("users", ["listUsers"]),
   },
   async mounted() {
-    await this.getListUsers();
+    // await this.getListUsers();
   },
   methods: {
     ...mapActions("users", ["getListUsers", "activeUser", "addUser"]),

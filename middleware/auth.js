@@ -1,8 +1,6 @@
-// middleware/auth.js
-export default function ({ $auth, redirect }) {
-  if ($auth.loggedIn) {
-    redirect("/");
-  } else {
-    redirect("/login");
+// middleware/authenticated.js
+export default async function ({ $auth, redirect }) {
+  if (!$auth.loggedIn) {
+    return redirect("/login");
   }
 }
