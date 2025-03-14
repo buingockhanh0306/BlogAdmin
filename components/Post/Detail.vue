@@ -41,6 +41,33 @@
         </a-checkbox-group>
       </a-form-model-item>
 
+      <a-form-model-item ref="image_url" label="Ảnh banner" prop="image_url">
+        <a-upload-dragger
+          name="file"
+          :multiple="false"
+          :remove="true"
+          :showUploadList="false"
+          @change="handleChange"
+        >
+          <template v-if="!form.image_url">
+            <p class="ant-upload-drag-icon upload_banner">
+              <a-icon type="inbox" />
+            </p>
+            <p class="ant-upload-text">Kéo thả hoặc click để tải ảnh lên</p>
+            <p class="ant-upload-hint">
+              Chỉ hỗ trợ định dạng ảnh: .jpg, .jpeg, .png
+            </p>
+          </template>
+          <div v-else>
+            <img
+              :src="form.image_url"
+              alt="Preview"
+              style="max-width: 300px; margin-top: 10px"
+            />
+          </div>
+        </a-upload-dragger>
+      </a-form-model-item>
+
       <a-form-model-item ref="content" label="Nội dung bài viết" prop="content">
         <CommonEditor
           :value.sync="form.content"
@@ -72,19 +99,21 @@ import ruleValidator from "~/mixins/ruleValidator";
 import general from "~/mixins/general";
 import { mapFields } from "vuex-map-fields";
 import { mapActions } from "vuex";
+const DEFAULT_FORM = {
+  title: "",
+  slug: "",
+  categoryIds: null,
+  content: "",
+  image_url: "",
+};
 export default {
   name: "PostDetail",
   mixins: [ruleValidator, general],
   data() {
     return {
       msgContent: "",
-      form: {
-        title: "",
-        slug: "",
-        categoryIds: null,
-        content: "",
-        is_active: true,
-      },
+      file: null,
+      form: { ...DEFAULT_FORM },
       rules: {
         title: this.titleRules(),
       },
@@ -105,6 +134,7 @@ export default {
       categoryIds: this.detailPost.categoryIds,
       content: this.detailPost.content,
       is_active: this.detailPost.is_active,
+      image_url: this.detailPost.image_url,
     };
   },
 
@@ -112,6 +142,10 @@ export default {
     ...mapActions("posts", ["getDetailPost", "updatePost"]),
     getCategoryName(categoryId) {
       return this.listCategories.find((item) => item.id == categoryId)?.name;
+    },
+    async handleChange(info) {
+      this.file = info.file.originFileObj;
+      this.form.image_url = URL.createObjectURL(this.file);
     },
     onSubmit() {
       this.$refs.ruleForm.validate(async (valid) => {
@@ -146,6 +180,12 @@ export default {
         this.$refs.ruleForm.clearValidate();
       }
     },
+    async handleUploadImage() {
+      const fileRef = ref(storage, `uploads/${this.file.name}`); // Tạo đường dẫn lưu file
+      await uploadBytes(fileRef, this.file);
+      const url = await getDownloadURL(fileRef);
+      this.form.image_url = url;
+    },
     handleBlur(field) {
       if (field === "title" && this.form.title) {
         this.$refs.title.onFieldBlur();
@@ -168,5 +208,9 @@ export default {
   justify-content: flex-end;
   gap: 20px;
   margin-top: 20px;
+}
+::v-deep(.ant-upload.ant-upload-drag) {
+  width: 50%;
+  margin: 0 auto;
 }
 </style>

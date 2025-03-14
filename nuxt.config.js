@@ -39,7 +39,6 @@ export default {
 
   axios: {
     // Example: setting baseURL
-    baseURL: process.env.BASE_URL, // Base URL for API requests
     credentials: false, // Include credentials with requests if needed
     // Additional configurations can be added here
   },
@@ -78,8 +77,6 @@ export default {
 
   env: {
     tinyMCEKey: process.env.TINYMCE_KEY,
-    baseURL: process.env.BASE_URL,
-    urlImage: process.env.URL_IMAGE,
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
     projectId: process.env.FIREBASE_PROJECT_ID,
