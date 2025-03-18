@@ -39,7 +39,15 @@ export const actions = {
   },
 
   async addPost({}, payload) {
-    const { title, slug, categoryIds, content, author_id, image_url } = payload;
+    const {
+      title,
+      slug,
+      categoryIds,
+      content,
+      author_id,
+      image_url,
+      description,
+    } = payload;
     const res = await addDoc(collection(db, "posts"), {
       title,
       slug,
@@ -47,6 +55,7 @@ export const actions = {
       content,
       author_id,
       image_url,
+      description,
       votes: 0,
       is_active: true,
       createdAt: new Date(),
@@ -55,8 +64,16 @@ export const actions = {
   },
 
   async updatePost({}, payload) {
-    const { id, title, slug, content, categoryIds, is_active, image_url } =
-      payload;
+    const {
+      id,
+      title,
+      slug,
+      content,
+      categoryIds,
+      is_active,
+      image_url,
+      description,
+    } = payload;
     const postRef = doc(db, "posts", id);
     await updateDoc(postRef, {
       title,
@@ -64,6 +81,7 @@ export const actions = {
       content,
       categoryIds,
       image_url,
+      description,
       is_active,
       updatedAt: new Date(),
     });

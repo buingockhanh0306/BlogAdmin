@@ -36,7 +36,6 @@
         <a-upload-dragger
           name="file"
           :multiple="false"
-          :remove="true"
           :showUploadList="false"
           @change="handleChange"
         >
@@ -57,6 +56,18 @@
             />
           </div>
         </a-upload-dragger>
+      </a-form-model-item>
+
+      <a-form-model-item
+        ref="description"
+        label="Mô tả ngắn"
+        prop="description"
+      >
+        <a-textarea
+          v-model.trim="form.description"
+          placeholder="Mô tả..."
+          :auto-size="{ minRows: 5, maxRows: 8 }"
+        />
       </a-form-model-item>
 
       <a-form-model-item ref="content" label="Nội dung bài viết" prop="content">
@@ -97,6 +108,7 @@ const DEFAULT_FORM = {
   title: "",
   slug: "",
   categoryIds: null,
+  description: null,
   content: "",
   image_url: "",
 };
@@ -111,6 +123,7 @@ export default {
       form: { ...DEFAULT_FORM },
       rules: {
         title: this.titleRules(),
+        description: this.descriptionRules(),
       },
       file: null,
     };
@@ -175,6 +188,7 @@ export default {
       });
     },
     async handleUploadImage() {
+      if (!this.file) return;
       const fileRef = ref(storage, `uploads/${this.file.name}`); // Tạo đường dẫn lưu file
       await uploadBytes(fileRef, this.file);
       const url = await getDownloadURL(fileRef);

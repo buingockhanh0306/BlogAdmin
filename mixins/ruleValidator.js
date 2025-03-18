@@ -98,5 +98,14 @@ export default {
         },
       ];
     },
+    descriptionRules() {
+      return [
+        {
+          required: true,
+          message: "Vui lòng nhập mô tả cho bài viết.",
+          trigger: "blur",
+        },
+      ];
+    },
   },
 };

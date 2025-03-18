@@ -68,6 +68,14 @@
         </a-upload-dragger>
       </a-form-model-item>
 
+      <a-form-model-item ref="description" label="Mô tả" prop="description">
+        <a-textarea
+          v-model.trim="form.description"
+          placeholder="Mô tả..."
+          :auto-size="{ minRows: 5, maxRows: 8 }"
+        />
+      </a-form-model-item>
+
       <a-form-model-item ref="content" label="Nội dung bài viết" prop="content">
         <CommonEditor
           :value.sync="form.content"
@@ -105,6 +113,7 @@ const DEFAULT_FORM = {
   categoryIds: null,
   content: "",
   image_url: "",
+  description: "",
 };
 export default {
   name: "PostDetail",
@@ -116,6 +125,7 @@ export default {
       form: { ...DEFAULT_FORM },
       rules: {
         title: this.titleRules(),
+        description: this.descriptionRules(),
       },
     };
   },
@@ -135,6 +145,7 @@ export default {
       content: this.detailPost.content,
       is_active: this.detailPost.is_active,
       image_url: this.detailPost.image_url,
+      description: this.detailPost.description,
     };
   },
 
