@@ -17,7 +17,7 @@
       </a-form-model-item>
 
       <a-form-model-item ref="slug" label="Đường dẫn" prop="slug">
-        <a-input v-model.trim="form.slug" disabled type="slug" />
+        <a-input v-model.trim="form.slug" disabled type="slug"/>
       </a-form-model-item>
 
       <a-form-model-item ref="is_active" label="Trạng thái" prop="is_active">
@@ -45,13 +45,12 @@
         <a-upload-dragger
           name="file"
           :multiple="false"
-          :remove="true"
           :showUploadList="false"
           @change="handleChange"
         >
           <template v-if="!form.image_url">
             <p class="ant-upload-drag-icon upload_banner">
-              <a-icon type="inbox" />
+              <a-icon type="inbox"/>
             </p>
             <p class="ant-upload-text">Kéo thả hoặc click để tải ảnh lên</p>
             <p class="ant-upload-hint">
@@ -105,8 +104,10 @@
 <script>
 import ruleValidator from "~/mixins/ruleValidator";
 import general from "~/mixins/general";
-import { mapFields } from "vuex-map-fields";
-import { mapActions } from "vuex";
+import {mapFields} from "vuex-map-fields";
+import {mapActions} from "vuex";
+import {storage, ref, uploadBytes, getDownloadURL} from "~/plugins/firebase";
+
 const DEFAULT_FORM = {
   title: "",
   slug: "",
@@ -122,7 +123,7 @@ export default {
     return {
       msgContent: "",
       file: null,
-      form: { ...DEFAULT_FORM },
+      form: {...DEFAULT_FORM},
       rules: {
         title: this.titleRules(),
         description: this.descriptionRules(),
@@ -136,6 +137,7 @@ export default {
     }),
   },
   async mounted() {
+    await this.getListCategories();
     await this.getDetailPost(this.$route.params.id);
     this.form = {
       ...this.form,
@@ -151,14 +153,15 @@ export default {
 
   methods: {
     ...mapActions("posts", ["getDetailPost", "updatePost"]),
-    getCategoryName(categoryId) {
-      return this.listCategories.find((item) => item.id == categoryId)?.name;
-    },
+    ...mapActions("categories", ["getListCategories"]),
     async handleChange(info) {
       this.file = info.file.originFileObj;
       this.form.image_url = URL.createObjectURL(this.file);
     },
-    onSubmit() {
+    async onSubmit() {
+      if (this.file) {
+        await this.handleUploadImage();
+      }
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid && this.form.content && this.form?.categoryIds?.length) {
           try {
@@ -192,10 +195,10 @@ export default {
       }
     },
     async handleUploadImage() {
-      const fileRef = ref(storage, `uploads/${this.file.name}`); // Tạo đường dẫn lưu file
+      const fileRef = ref(storage, `uploads/${this.file?.name}`); // Tạo đường dẫn lưu file
       await uploadBytes(fileRef, this.file);
       const url = await getDownloadURL(fileRef);
-      this.form.image_url = url;
+      this.form.image_url = url || this.form.image_url;
     },
     handleBlur(field) {
       if (field === "title" && this.form.title) {
@@ -209,8 +212,10 @@ export default {
     onReturn() {
       this.$router.push("/posts/");
     },
-  },
-};
+  }
+  ,
+}
+;
 </script>
 
 <style lang="scss" scoped>
@@ -220,6 +225,7 @@ export default {
   gap: 20px;
   margin-top: 20px;
 }
+
 ::v-deep(.ant-upload.ant-upload-drag) {
   width: 50%;
   margin: 0 auto;

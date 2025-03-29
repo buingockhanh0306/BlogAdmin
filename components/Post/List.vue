@@ -7,6 +7,10 @@
       </a-button>
     </div>
     <a-table :columns="columns" :data-source="listPosts" row-key="id">
+      <template slot="index" slot-scope="__, record, index">
+        {{ index + 1 }}
+      </template>
+      <span class="" slot="title_post" slot-scope="title_post"> {{ title_post }} </span>
       <div slot="categoryIds" slot-scope="categoryIds">
         <a-tag
           :color="getColor(categoryId)"
@@ -49,14 +53,24 @@ export default {
       isShowModalUpdateCategory: false,
       recordSelected: null,
       columns: [
-        { title: "ID", dataIndex: "id", key: "id" },
-        { title: "Tiêu đề bài viết", dataIndex: "title", key: "title" },
+        {
+          title: "STT",
+          key: "index",
+          scopedSlots: { customRender: "index" },
+        },
+        {
+          title: "Tiêu đề bài viết",
+          dataIndex: "title",
+          key: "title_post",
+          scopedSlots: { customRender: "title_post" },
+        },
         { title: "Tác giả", dataIndex: "author", key: "author" },
         {
           title: "Đường dẫn",
           dataIndex: "slug",
           key: "slug",
           scopedSlots: { customRender: "slug" },
+          ellipsis: true
         },
         {
           title: "Vote",
