@@ -4,7 +4,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "Blog Admin Panel",
+    title: "Klog Admin Panel",
     htmlAttrs: {
       lang: "en",
     },
