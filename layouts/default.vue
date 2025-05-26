@@ -6,7 +6,7 @@
         <a-menu-item
           :key="item.key"
           v-for="item in sidebar"
-          @click="$router.push(item.link)"
+          @click="handleClick(item)"
         >
           <a-icon :type="item.icon" />
           <span>{{ item.text }}</span>
@@ -100,6 +100,12 @@ export default {
           icon: "file-text",
           link: "/posts",
         },
+        {
+          key: 5,
+          text: "Đi đến website",
+          icon: "home",
+          link: "https://blog-bnk.vercel.app/",
+        },
       ],
     };
   },
@@ -127,6 +133,13 @@ export default {
     },
     clickAvatar() {
       this.collapsedAvatar = !this.collapsedAvatar;
+    },
+    handleClick(item) {
+      if (item.key === 5) {
+        window.open(item.link, "_blank");
+      } else {
+        this.$router.push(item.link);
+      }
     },
     async handleLogout() {
       await this.$auth.logout();
